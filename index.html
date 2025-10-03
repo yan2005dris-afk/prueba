@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Robot AR</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <style>
+    body { margin: 0; background: #000; display: flex; justify-content: center; align-items: center; height: 100vh; }
+    model-viewer { width: 100%; height: 100%; }
+  </style>
+</head>
+<body>
+  <script>
+    const glb  = 'https://yan2005dris-afk.github.io/blender-ar/robot.glb';
+    const usdz = 'https://yan2005dris-afk.github.io/blender-ar/robot.usdz';
+
+    const isIOS     = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const isAndroid = /Android/.test(navigator.userAgent);
+
+    if (isIOS) {
+      // Quick Look (iOS)
+      location.href = usdz + '#allowsContentScaling=0';
+    } else if (isAndroid) {
+      // Scene Viewer (Android)
+      const intent = `intent://arvr.google.com/scene-viewer/1.0?file=${encodeURIComponent(glb)}#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;S.browser_fallback_url=${encodeURIComponent(location.href)};end;`;
+      location.href = intent;
+    } else {
+  // PC → mostramos visor 3D en esta misma página
+  document.body.innerHTML = `
+    <model-viewer src="${glb}" 
+                  alt="Robot 3D"
+                  auto-rotate 
+                  camera-controls 
+                  ar 
+                  ar-modes="scene-viewer quick-look webxr"
+                  style="width:100%;height:100%;">
+    </model-viewer>`;
+}
+
+  </script>
+</body>
+</html>
